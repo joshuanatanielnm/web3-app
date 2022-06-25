@@ -14,6 +14,7 @@ export const Account = () => {
   const { disconnect } = useDisconnect()
   const { activeChain } = useNetwork()
 
+  // utils/address.ts -> truncateAddress(address, 4)
   const address = `${accountData?.address?.substring(
     0,
     4

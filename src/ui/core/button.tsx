@@ -1,4 +1,9 @@
-import { Box, ButtonProps, Button as ChakraButton } from '@chakra-ui/react'
+import {
+  Box,
+  BoxProps,
+  ButtonProps,
+  Button as ChakraButton,
+} from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import React from 'react'
 

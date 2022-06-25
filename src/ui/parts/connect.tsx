@@ -1,46 +1,45 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useAccount } from 'wagmi'
 import { WalletSelector } from './wallet-selector'
 import { SignMessage } from './sign-message'
 import { Account } from './Account'
 
+export const USER_VERIFIED_KEY = 'userVerified'
+
 export const Connect = () => {
   const { data: accountData } = useAccount()
-  const [isAvailable, setIsAvailable] = useState(false)
+
+  const isAvailable = Boolean(accountData)
+
   const [userVerified, setUserVerified] = useState<string>((): string => {
     const isVerified =
       typeof window !== 'undefined' ? localStorage.getItem('userVerified') : ''
-    if (isVerified) {
-      return userVerified
-    } else {
-      return ''
-    }
+    return isVerified ?? ''
   })
 
-  useEffect(() => {
-    if (accountData) {
-      setUserVerified(
-        typeof window !== 'undefined'
-          ? (localStorage.getItem('userVerified') as string)
-          : ''
-      )
-    } else {
-      setUserVerified('')
-      localStorage.clear()
+  const isVerified = useMemo(() => {
+    const isBrowser = typeof window !== 'undefined'
+    if (isAvailable && isBrowser) {
+      return Boolean(localStorage.getItem(USER_VERIFIED_KEY))
     }
-  }, [accountData, userVerified])
+    return ''
+  }, [isAvailable])
 
-  useEffect(() => {
-    if (accountData) {
-      setIsAvailable(true)
-    } else {
-      setIsAvailable(false)
-    }
-  }, [accountData])
+  // useEffect(() => {
+  //   if (accountData) {
+  //     setUserVerified(
+  //       typeof window !== 'undefined'
+  //         ? (localStorage.getItem('userVerified') as string)
+  //         : ''
+  //     )
+  //   } else {
+  //     setUserVerified('')
+  //     localStorage.clear()
+  //   }
+  // }, [accountData, userVerified])
 
-  if (accountData && isAvailable && !userVerified)
+  if (isVerified && isAvailable)
     return <SignMessage setUserVerified={setUserVerified} />
   else if (accountData && isAvailable && userVerified) return <Account />
-
   return <WalletSelector />
 }
