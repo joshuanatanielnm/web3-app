@@ -4,6 +4,7 @@ import { useAccount, useDisconnect, useBalance, useNetwork } from 'wagmi'
 
 import { Button } from '../core/button'
 import { ModalSignMessage } from '../core/modal'
+import { truncateAddress } from '../../utils/address'
 
 export const Account = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -14,15 +15,12 @@ export const Account = () => {
   const { disconnect } = useDisconnect()
   const { activeChain } = useNetwork()
 
-  const address = `${accountData?.address?.substring(
-    0,
-    4
-  )}...${accountData?.address?.substring(accountData?.address?.length - 4)}`
+  const address = truncateAddress(4, accountData?.address)
 
   const balance = `${ensBalanceData?.formatted} ${ensBalanceData?.unit}`
 
   return (
-    <Box>
+    <>
       <Box
         boxSize={12}
         bgGradient='linear(to-l, #7928CA, #FF0080)'
@@ -59,6 +57,6 @@ export const Account = () => {
           </Button>
         </Flex>
       </ModalSignMessage>
-    </Box>
+    </>
   )
 }
