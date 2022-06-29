@@ -42,9 +42,9 @@ export const Account = () => {
     return !activeChain?.unsupported
   }, [activeChain?.unsupported])
 
-  const balance = `${Math.round(
-    parseInt(ensBalanceData?.formatted ?? '0') ?? 0
-  )} ETH`
+  const balance = `${
+    parseInt(ensBalanceData?.formatted ?? '0').toFixed(4) ?? 0
+  } ETH`
 
   return (
     <Popover>
@@ -66,15 +66,17 @@ export const Account = () => {
           boxSize={9}
         >
           {ensAvatarData ? (
-            <Image
-              src={ensAvatarData}
-              alt='avatar'
-              boxSize={7}
-              rounded='full'
-              boxShadow='xl'
-              mx='auto'
-              my='auto'
-            />
+            <Box>
+              <Image
+                src={ensAvatarData}
+                alt='avatar'
+                boxSize={7}
+                rounded='full'
+                boxShadow='xl'
+                mx='auto'
+                my='auto'
+              />
+            </Box>
           ) : (
             <Box
               bgGradient='linear(to-l, #7928CA, #FF0080)'
