@@ -42,10 +42,6 @@ export const Account = () => {
     return !activeChain?.unsupported
   }, [activeChain?.unsupported])
 
-  const balance = `${
-    parseInt(ensBalanceData?.formatted ?? '0').toFixed(4) ?? 0
-  } ETH`
-
   return (
     <Popover>
       <PopoverTrigger>
@@ -165,8 +161,8 @@ export const Account = () => {
                 </Flex>
               </Tooltip>
             </Flex>
-            <Text fontSize='lg' fontWeight='bold'>
-              {balance}
+            <Text fontSize='lg' fontWeight='bold' maxW='8ch'>
+              {ensBalanceData?.formatted} ETH
             </Text>
           </Box>
 
