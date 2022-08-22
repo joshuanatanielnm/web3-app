@@ -9,55 +9,54 @@ import {
   useClipboard,
   Tooltip,
   Image,
-} from '@chakra-ui/react'
-import React, { useMemo, useState } from 'react'
+} from "@chakra-ui/react";
+import React, { useMemo } from "react";
 import {
   useAccount,
   useDisconnect,
   useBalance,
   useNetwork,
   useEnsAvatar,
-} from 'wagmi'
+} from "wagmi";
 
-import { truncateAddress } from '../../utils/address'
-import { BsChevronRight } from 'react-icons/bs'
-import { AiOutlinePoweroff } from 'react-icons/ai'
-import { PopoverContainerContent } from '../layout/popover-container-content'
+import { truncateAddress } from "../../utils/address";
+import { BsChevronRight } from "react-icons/bs";
+import { AiOutlinePoweroff } from "react-icons/ai";
+import { PopoverContainerContent } from "../layout/popover-container-content";
 
 export const Account = () => {
-  const { data: accountData } = useAccount()
+  const { data: accountData } = useAccount();
   const { data: ensBalanceData } = useBalance({
     addressOrName: accountData?.address,
-  })
+  });
   const { data: ensAvatarData } = useEnsAvatar({
     addressOrName: accountData?.address,
-  })
-  const { disconnect } = useDisconnect()
-  const { activeChain } = useNetwork()
-  const [value] = useState(accountData?.address ?? '')
-  const { hasCopied, onCopy } = useClipboard(value)
+  });
+  const { disconnect } = useDisconnect();
+  const { activeChain } = useNetwork();
+  const { hasCopied, onCopy } = useClipboard(String(accountData?.address));
 
-  const address = truncateAddress(4, accountData?.address)
+  const address = truncateAddress(4, accountData?.address);
   const isNetworkSupported = useMemo(() => {
-    return !activeChain?.unsupported
-  }, [activeChain?.unsupported])
+    return !activeChain?.unsupported;
+  }, [activeChain?.unsupported]);
 
   return (
     <Popover>
       <PopoverTrigger>
         <Box
-          as='button'
-          rounded='full'
-          border='solid 2px'
-          borderColor='gray.300'
+          as="button"
+          rounded="full"
+          border="solid 2px"
+          borderColor="gray.300"
           _hover={{
-            borderColor: 'black',
-            transition: '1s',
+            borderColor: "black",
+            transition: "1s",
           }}
           _expanded={{
-            borderColor: 'black',
-            transition: '1s',
-            bg: 'black',
+            borderColor: "black",
+            transition: "1s",
+            bg: "black",
           }}
           boxSize={9}
         >
@@ -65,56 +64,58 @@ export const Account = () => {
             <Box>
               <Image
                 src={ensAvatarData}
-                alt='avatar'
+                alt="avatar"
                 boxSize={7}
-                rounded='full'
-                boxShadow='xl'
-                mx='auto'
-                my='auto'
+                rounded="full"
+                boxShadow="xl"
+                mx="auto"
+                my="auto"
               />
             </Box>
           ) : (
             <Box
-              bgGradient='linear(to-l, #7928CA, #FF0080)'
+              bgGradient="linear(to-l, #7928CA, #FF0080)"
               boxSize={7}
-              rounded='full'
-              boxShadow='xl'
-              mx='auto'
-              my='auto'
+              rounded="full"
+              boxShadow="xl"
+              mx="auto"
+              my="auto"
             />
           )}
         </Box>
       </PopoverTrigger>
-      <PopoverContent width='64' border='none' boxShadow='xl'>
+      <PopoverContent width="64" border="none" boxShadow="xl">
         <PopoverBody>
           {/* profile button */}
           <PopoverContainerContent>
             <Box>
               {ensAvatarData ? (
-                <Image
-                  src={ensAvatarData}
-                  alt='avatar'
-                  boxSize={9}
-                  rounded='full'
-                  boxShadow='xl'
-                />
+                <Box>
+                  <Image
+                    src={ensAvatarData}
+                    alt="avatar"
+                    boxSize={9}
+                    rounded="full"
+                    boxShadow="xl"
+                  />
+                </Box>
               ) : (
                 <Box
-                  bgGradient='linear(to-l, #7928CA, #FF0080)'
+                  bgGradient="linear(to-l, #7928CA, #FF0080)"
                   boxSize={9}
-                  rounded='full'
-                  boxShadow='xl'
+                  rounded="full"
+                  boxShadow="xl"
                 />
               )}
             </Box>
-            <Flex align='center' justifyContent='space-between' w='full'>
-              <Text fontSize='md' fontWeight='medium' pl='1' pr='2'>
+            <Flex align="center" justifyContent="space-between" w="full">
+              <Text fontSize="md" fontWeight="medium" pl="1" pr="2">
                 Profile
               </Text>
               <Box
-                color='gray'
+                color="gray"
                 _groupHover={{
-                  color: 'black',
+                  color: "black",
                 }}
               >
                 <BsChevronRight size={16} />
@@ -123,9 +124,9 @@ export const Account = () => {
           </PopoverContainerContent>
 
           {/* Wallet balance */}
-          <Box border='0.5px solid' borderColor='gray.200' rounded='lg' p='2'>
-            <Flex align='center' justifyContent='space-between'>
-              <Text fontSize='xs' fontWeight='medium' color='gray.500'>
+          <Box border="0.5px solid" borderColor="gray.200" rounded="lg" p="2">
+            <Flex align="center" justifyContent="space-between">
+              <Text fontSize="xs" fontWeight="medium" color="gray.500">
                 Wallet Balance
               </Text>
 
@@ -133,35 +134,35 @@ export const Account = () => {
                 label={
                   isNetworkSupported
                     ? hasCopied
-                      ? 'coppied to clipboard'
-                      : 'copy to clipboard'
-                    : 'Change your network'
+                      ? "coppied to clipboard"
+                      : "copy to clipboard"
+                    : "Change your network"
                 }
-                placement='top'
+                placement="top"
                 closeDelay={300}
               >
                 <Flex
-                  align='center'
+                  align="center"
                   gap={1}
-                  background='gray.100'
-                  px='2'
-                  py='1'
-                  rounded='lg'
-                  as='button'
+                  background="gray.100"
+                  px={2}
+                  py={1}
+                  rounded="lg"
+                  as="button"
                   onClick={onCopy}
                 >
-                  <Text fontSize='xs'>
-                    {isNetworkSupported ? address : 'Wrong Network'}
+                  <Text fontSize="xs">
+                    {isNetworkSupported ? address : "Wrong Network"}
                   </Text>
                   <Box
-                    bg={isNetworkSupported ? 'green.400' : 'red.400'}
+                    bg={isNetworkSupported ? "green.400" : "red.400"}
                     boxSize={3}
-                    rounded='full'
+                    rounded="full"
                   />
                 </Flex>
               </Tooltip>
             </Flex>
-            <Text fontSize='lg' fontWeight='bold' maxW='8ch'>
+            <Text fontSize="lg" fontWeight="bold" maxW="8ch">
               {ensBalanceData?.formatted} ETH
             </Text>
           </Box>
@@ -171,14 +172,14 @@ export const Account = () => {
             <Box>
               <AiOutlinePoweroff size={18} />
             </Box>
-            <Flex align='center' justifyContent='space-between' w='full'>
-              <Text fontSize='md' fontWeight='medium' pl='1' pr='2'>
+            <Flex align="center" justifyContent="space-between" w="full">
+              <Text fontSize="md" fontWeight="medium" pl={1} pr={2}>
                 Disconnect
               </Text>
               <Box
-                color='gray'
+                color="gray"
                 _groupHover={{
-                  color: 'black',
+                  color: "black",
                 }}
               >
                 <BsChevronRight size={16} />
@@ -188,5 +189,5 @@ export const Account = () => {
         </PopoverBody>
       </PopoverContent>
     </Popover>
-  )
-}
+  );
+};
