@@ -1,23 +1,18 @@
-import type { AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
-import {
-  configureChains,
-  createClient,
-  defaultChains,
-  WagmiConfig,
-} from 'wagmi'
-import { alchemyProvider } from 'wagmi/providers/alchemy'
-import { publicProvider } from 'wagmi/providers/public'
-import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
-import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import type { AppProps } from "next/app";
+import { ChakraProvider } from "@chakra-ui/react";
+import { configureChains, createClient, WagmiConfig, chain } from "wagmi";
+import { alchemyProvider } from "wagmi/providers/alchemy";
+import { publicProvider } from "wagmi/providers/public";
+import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 
-const alchemyId = process.env.ALCHEMY_ID
+const alchemyId = process.env.ALCHEMY_ID;
 
-const { chains, provider, webSocketProvider } = configureChains(defaultChains, [
-  alchemyProvider({ alchemyId }),
-  publicProvider(),
-])
+const { chains, provider, webSocketProvider } = configureChains(
+  [chain.mainnet],
+  [alchemyProvider({ alchemyId }), publicProvider()]
+);
 
 const client = createClient({
   autoConnect: true,
@@ -32,13 +27,13 @@ const client = createClient({
     new CoinbaseWalletConnector({
       chains,
       options: {
-        appName: 'wagmi',
+        appName: "wagmi",
       },
     }),
   ],
   provider,
   webSocketProvider,
-})
+});
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -47,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </WagmiConfig>
     </ChakraProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
